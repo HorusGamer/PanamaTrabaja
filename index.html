@@ -13,24 +13,6 @@
         }
         h1 {
             color: #0044cc;
-            text-align: center;
-        }
-        .category {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .category button {
-            margin: 0 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background-color: #0044cc;
-            color: white;
-            cursor: pointer;
-        }
-        .category button:hover {
-            background-color: #003399;
         }
         .job {
             background-color: #fff;
@@ -39,8 +21,6 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 600px;
-            margin-left: auto;
-            margin-right: auto;
         }
         .job h2 {
             color: #d32f2f;
@@ -48,19 +28,26 @@
         .job p {
             color: #333;
         }
+        .pagination {
+            margin: 20px 0;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 15px;
+        }
+        #searchBar {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 600px;
+        }
     </style>
 </head>
 <body>
 
     <h1>VACANTES DE HOY</h1>
-    <div class="category">
-        <button onclick="filterJobs('all')">Todos</button>
-        <button onclick="filterJobs('ventas')">Ventas</button>
-        <button onclick="filterJobs('tecnologia')">Tecnología</button>
-        <button onclick="filterJobs('administracion')">Administración</button>
-        <button onclick="filterJobs('cocina')">Cocina</button>
-    </div>
+    <input type="text" id="searchBar" placeholder="Buscar trabajos..." oninput="filterJobs()">
     <div id="jobsContainer"></div>
+    <div class="pagination" id="pagination"></div>
 
     <script>
         const jobs = [
@@ -70,8 +57,7 @@
                 province: "Chiriquí",
                 contact: "recursoshumanos@laranadorada.com",
                 description: "Residir en David",
-                date: new Date("2024-10-13"),
-                category: "cocina"
+                date: new Date("2024-10-13")
             },
             {
                 title: "Cajero (David)",
@@ -79,8 +65,7 @@
                 province: "Chiriquí",
                 contact: "recursoshumanos@laranadorada.com",
                 description: "Cajero",
-                date: new Date("2024-10-13"),
-                category: "ventas"
+                date: new Date("2024-10-13")
             },
             {
                 title: "Cocinero",
@@ -88,8 +73,7 @@
                 province: "Panamá Oeste, Arraiján",
                 contact: "6919-4079",
                 description: "Cocinero o cocinera con 'Excelente' sazón, versátil, creativo y buena presentación.",
-                date: new Date("2024-10-13"),
-                category: "cocina"
+                date: new Date("2024-10-13")
             },
             {
                 title: "Salonero",
@@ -97,76 +81,109 @@
                 province: "Chiriquí",
                 contact: "recursoshumanos@laranadorada.com",
                 description: "Atender a los clientes y brindar un buen servicio.",
-                date: new Date("2024-10-13"),
-                category: "cocina"
+                date: new Date("2024-10-13")
             },
             {
                 title: "Supervisor de Instalación de Muebles",
                 company: "Fd Center Panamá",
                 province: "Panamá",
                 contact: "reclutamiento@fdcenter.center",
-                description: "• Licenciatura en Arquitectura, Diseño de Interiores o carrera afin. • Experiencia en la supervisión y ejecución de proyectos.",
-                date: new Date("2024-10-13"),
-                category: "administracion"
+                description: "• Licenciatura en Arquitectura, Diseño de Interiores o carrera afín.\n• Experiencia en la supervisión y ejecución de proyectos.\n• Mínimo 2 años de experiencia en instalación de mobiliario, residencial o comercial.\n• Manejo de AutoCAD, MS Project o similar.\n• Excel Intermedio.\n• Experiencia en atención al cliente y supervisión de contratistas.",
+                date: new Date("2024-10-13")
+            },
+            {
+                title: "Asistente de Proyectos",
+                company: "",
+                province: "Panamá",
+                contact: "openworkpty@gmail.com",
+                description: "- Cursando estudios universitarios\n- Manejo intermedio / avanzado de AUTOCAD\n- Licencia de conducir\n- Entusiasta, extrovertida, dinámica",
+                date: new Date("2024-10-13")
             },
             {
                 title: "Ejecutivo de Ventas",
                 company: "MultiGroup",
                 province: "Panamá",
                 contact: "reclutamiento@multigroup.com",
-                description: "Responsable de visitar a clientes, prospectar y generar relaciones a largo plazo para atención de ventas.",
-                date: new Date("2024-10-13"),
-                category: "ventas"
+                description: "Responsable de visitar a clientes, prospectar y generar relaciones a largo plazo para atención de ventas en canales de mayoreo, proyectos e industriales. Promocionar y colocar nuestros productos derivados del acero. Gestión de cobranza y actividades administrativas de la posición comercial.",
+                date: new Date("2024-10-13")
             },
+            // Agregar más trabajos si lo deseas...
         ];
 
-        function displayJobs(filter = 'all') {
+        let currentPage = 1;
+        const jobsPerPage = 10;
+
+        function displayJobs() {
             const jobContainer = document.getElementById('jobsContainer');
+            const pagination = document.getElementById('pagination');
             jobContainer.innerHTML = '';
+            pagination.innerHTML = '';
 
-            const now = new Date();
+            // Filtrar trabajos según el texto de búsqueda
+            const searchQuery = document.getElementById('searchBar').value.toLowerCase();
+            const filteredJobs = jobs.filter(job => 
+                job.title.toLowerCase().includes(searchQuery) ||
+                (job.company && job.company.toLowerCase().includes(searchQuery)) ||
+                job.description.toLowerCase().includes(searchQuery)
+            );
 
-            jobs.forEach((job) => {
-                const timeDiff = now - job.date;
-                const hoursPassed = timeDiff / (1000 * 60 * 60);
+            // Paginación
+            const totalJobs = filteredJobs.length;
+            const totalPages = Math.ceil(totalJobs / jobsPerPage);
+            const startIndex = (currentPage - 1) * jobsPerPage;
+            const endIndex = startIndex + jobsPerPage;
+            const jobsToDisplay = filteredJobs.slice(startIndex, endIndex);
 
-                if (hoursPassed < 24 && (filter === 'all' || job.category === filter)) {
-                    const jobDiv = document.createElement('div');
-                    jobDiv.classList.add('job');
+            // Mostrar trabajos
+            jobsToDisplay.forEach((job) => {
+                const jobDiv = document.createElement('div');
+                jobDiv.classList.add('job');
 
-                    const jobTitle = document.createElement('h2');
-                    jobTitle.innerText = job.title;
-                    jobDiv.appendChild(jobTitle);
+                const jobTitle = document.createElement('h2');
+                jobTitle.innerText = job.title;
+                jobDiv.appendChild(jobTitle);
 
-                    if (job.company) {
-                        const jobCompany = document.createElement('p');
-                        jobCompany.innerText = `Empresa: ${job.company}`;
-                        jobDiv.appendChild(jobCompany);
-                    }
-
-                    const jobProvince = document.createElement('p');
-                    jobProvince.innerText = `Provincia: ${job.province}`;
-                    jobDiv.appendChild(jobProvince);
-
-                    const jobContact = document.createElement('p');
-                    jobContact.innerText = `Contacto: ${job.contact}`;
-                    jobDiv.appendChild(jobContact);
-
-                    const jobDescription = document.createElement('p');
-                    jobDescription.innerText = job.description;
-                    jobDiv.appendChild(jobDescription);
-
-                    const jobDate = document.createElement('p');
-                    jobDate.innerText = `Fecha de publicación: ${job.date.toLocaleDateString()}`;
-                    jobDiv.appendChild(jobDate);
-
-                    jobContainer.appendChild(jobDiv);
+                if (job.company) {
+                    const jobCompany = document.createElement('p');
+                    jobCompany.innerText = `Empresa: ${job.company}`;
+                    jobDiv.appendChild(jobCompany);
                 }
+
+                const jobProvince = document.createElement('p');
+                jobProvince.innerText = `Provincia: ${job.province}`;
+                jobDiv.appendChild(jobProvince);
+
+                const jobContact = document.createElement('p');
+                jobContact.innerText = `Contacto: ${job.contact}`;
+                jobDiv.appendChild(jobContact);
+
+                const jobDescription = document.createElement('p');
+                jobDescription.innerText = job.description;
+                jobDiv.appendChild(jobDescription);
+
+                const jobDate = document.createElement('p');
+                jobDate.innerText = `Fecha de publicación: ${job.date.toLocaleDateString()}`;
+                jobDiv.appendChild(jobDate);
+
+                jobContainer.appendChild(jobDiv);
             });
+
+            // Mostrar paginación
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.innerText = i;
+                button.disabled = i === currentPage;
+                button.onclick = () => {
+                    currentPage = i;
+                    displayJobs();
+                };
+                pagination.appendChild(button);
+            }
         }
 
-        function filterJobs(category) {
-            displayJobs(category);
+        function filterJobs() {
+            currentPage = 1; // Reiniciar a la primera página al filtrar
+            displayJobs();
         }
 
         displayJobs();
