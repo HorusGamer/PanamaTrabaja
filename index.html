@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panamá Trabaja - Ofertas de Trabajo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #0044cc;
+        }
+        .job {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+        }
+        .job h2 {
+            color: #d32f2f;
+        }
+        .job p {
+            color: #333;
+        }
+        #filter {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>VACANTES DE HOY</h1>
+    
+    <div id="filter">
+        <label for="categorySelect">Filtrar por categoría:</label>
+        <select id="categorySelect">
+            <option value="todas">Todas</option>
+            <option value="cocina">Cocina</option>
+            <option value="servicio">Servicio</option>
+            <option value="diseño">Diseño</option>
+            <option value="ventas">Ventas</option>
+        </select>
+    </div>
+
+    <div id="jobsContainer"></div>
+
+    <script>
+        const jobs = [
+            {
+                title: "Auxiliar de Cocina",
+                company: "La Rana Dorada",
+                province: "Chiriquí",
+                contact: "recursoshumanos@laranadorada.com",
+                description: "Residir en David",
+                date: new Date("2024-10-13"),
+                category: "cocina"
+            },
+            {
+                title: "Cajero (David)",
+                company: "La Rana Dorada",
+                province: "Chiriquí",
+                contact: "recursoshumanos@laranadorada.com",
+                description: "Cajero",
+                date: new Date("2024-10-13"),
+                category: "servicio"
+            },
+            {
+                title: "Cocinero",
+                company: "",
+                province: "Panamá Oeste, Arraiján",
+                contact: "6919-4079",
+                description: "Cocinero o cocinera con 'Excelente' sazón, versátil, creativo y buena presentación.",
+                date: new Date("2024-10-13"),
+                category: "cocina"
+            },
+            {
+                title: "Salonero",
+                company: "La Rana Dorada",
+                province: "Chiriquí",
+                contact: "recursoshumanos@laranadorada.com",
+                description: "Atender a los clientes y brindar un buen servicio.",
+                date: new Date("2024-10-13"),
+                category: "servicio"
+            },
+            {
+                title: "Supervisor de Instalación de Muebles",
+                company: "Fd Center Panamá",
+                province: "Panamá",
+                contact: "reclutamiento@fdcenter.center",
+                description: "• Licenciatura en Arquitectura, Diseño de Interiores o carrera afin.\n• Experiencia en la supervisión y ejecución de proyectos.\n• Mínimo 2 años de experiencia en instalación de mobiliario, residencial o comercial.\n• Manejo de AutoCAD, MS Project o similar.\n• Excel Intermedio.\n• Experiencia en atención al cliente y supervisión de contratistas.",
+                date: new Date("2024-10-13"),
+                category: "diseño"
+            },
+            {
+                title: "Asistente de Proyectos",
+                company: "",
+                province: "Panamá",
+                contact: "openworkpty@gmail.com",
+                description: "- Cursando estudios universitarios\n- Manejo intermedio / avanzado de AUTOCAD\n- Licencia de conducir\n- Entusiasta, extrovertida, dinámica",
+                date: new Date("2024-10-13"),
+                category: "diseño"
+            },
+            {
+                title: "Ejecutivo de Ventas",
+                company: "MultiGroup",
+                province: "Panamá",
+                contact: "reclutamiento@multigroup.com",
+                description: "Responsable de visitar a clientes, prospectar y generar relaciones a largo plazo para atención de ventas en canales de mayoreo, proyectos e industriales. Promocionar y colocar nuestros productos derivados del acero. Gestión de cobranza y actividades administrativas de Ia posición comercial.",
+                date: new Date("2024-10-13"),
+                category: "ventas"
+            },
+        ];
+
+        function displayJobs(category = 'todas') {
+            const jobContainer = document.getElementById('jobsContainer');
+            jobContainer.innerHTML = '';
+
+            const now = new Date();
+
+            jobs.forEach((job) => {
+                const timeDiff = now - job.date;
+                const hoursPassed = timeDiff / (1000 * 60 * 60);
+
+                if (hoursPassed < 24 && (category === 'todas' || job.category === category)) {
+                    const jobDiv = document.createElement('div');
+                    jobDiv.classList.add('job');
+
+                    // Título siempre primero
+                    const jobTitle = document.createElement('h2');
+                    jobTitle.innerText = job.title;
+                    jobDiv.appendChild(jobTitle);
+
+                    // Solo mostrar empresa si no está vacía
+                    if (job.company) {
+                        const jobCompany = document.createElement('p');
+                        jobCompany.innerText = `Empresa: ${job.company}`;
+                        jobDiv.appendChild(jobCompany);
+                    }
+
+                    const jobProvince = document.createElement('p');
+                    jobProvince.innerText = `Provincia: ${job.province}`;
+                    jobDiv.appendChild(jobProvince);
+
+                    const jobContact = document.createElement('p');
+                    jobContact.innerText = `Contacto: ${job.contact}`;
+                    jobDiv.appendChild(jobContact);
+
+                    const jobDescription = document.createElement('p');
+                    jobDescription.innerText = job.description;
+                    jobDiv.appendChild(jobDescription);
+
+                    const jobDate = document.createElement('p');
+                    jobDate.innerText = `Fecha de publicación: ${job.date.toLocaleDateString()}`;
+                    jobDiv.appendChild(jobDate);
+
+                    jobContainer.appendChild(jobDiv);
+                }
+            });
+        }
+
+        displayJobs();
+
+        document.getElementById('categorySelect').addEventListener('change', (event) => {
+            displayJobs(event.target.value);
+        });
+
+        function clearJobsAfter24Hours() {
+            setInterval(() => {
+                displayJobs();
+            }, 60 * 60 * 1000);
+        }
+
+        clearJobsAfter24Hours();
+    </script>
+
+</body>
+</html>
