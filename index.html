@@ -4,23 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panamá Trabaja - Ofertas de Trabajo</title>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-K9JZ8C9N');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MZ5KZ92E8R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MZ5KZ92E8R');
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f4f4f4;
+            text-align: center;
+            overflow-x: hidden;
         }
         h1 {
             color: #0044cc;
         }
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .search-bar {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 400px;
+        }
         .job {
             background-color: #fff;
             padding: 15px;
-            margin-bottom: 15px;
+            margin: 15px auto;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 600px;
+            width: 95%;
+            max-width: 600px;
+            text-align: left;
         }
         .job h2 {
             color: #d32f2f;
@@ -34,160 +65,106 @@
         .pagination button {
             margin: 0 5px;
             padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0044cc;
+            color: white;
+            cursor: pointer;
         }
-        #searchBar {
-            margin-bottom: 20px;
-            padding: 10px;
-            width: 600px;
+        .pagination button.disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K9JZ8C9N"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <h1>VACANTES DE HOY</h1>
-    <input type="text" id="searchBar" placeholder="Buscar trabajos..." oninput="filterJobs()">
+    <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Buscar empleos...">
+    </div>
+    <!-- Aquí se mostrarán los trabajos -->
     <div id="jobsContainer"></div>
-    <div class="pagination" id="pagination"></div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <button id="prevButton" class="disabled" disabled>Anterior</button>
+        <button id="nextButton">Siguiente</button>
+    </div>
 
     <script>
         const jobs = [
-            {
-                title: "Auxiliar de Cocina",
-                company: "La Rana Dorada",
-                province: "Chiriquí",
-                contact: "recursoshumanos@laranadorada.com",
-                description: "Residir en David",
-                date: new Date("2024-10-13")
-            },
-            {
-                title: "Cajero (David)",
-                company: "La Rana Dorada",
-                province: "Chiriquí",
-                contact: "recursoshumanos@laranadorada.com",
-                description: "Cajero",
-                date: new Date("2024-10-13")
-            },
-            {
-                title: "Cocinero",
-                company: "",
-                province: "Panamá Oeste, Arraiján",
-                contact: "6919-4079",
-                description: "Cocinero o cocinera con 'Excelente' sazón, versátil, creativo y buena presentación.",
-                date: new Date("2024-10-13")
-            },
-            {
-                title: "Salonero",
-                company: "La Rana Dorada",
-                province: "Chiriquí",
-                contact: "recursoshumanos@laranadorada.com",
-                description: "Atender a los clientes y brindar un buen servicio.",
-                date: new Date("2024-10-13")
-            },
-            {
-                title: "Supervisor de Instalación de Muebles",
-                company: "Fd Center Panamá",
-                province: "Panamá",
-                contact: "reclutamiento@fdcenter.center",
-                description: "• Licenciatura en Arquitectura, Diseño de Interiores o carrera afín.\n• Experiencia en la supervisión y ejecución de proyectos.\n• Mínimo 2 años de experiencia en instalación de mobiliario, residencial o comercial.\n• Manejo de AutoCAD, MS Project o similar.\n• Excel Intermedio.\n• Experiencia en atención al cliente y supervisión de contratistas.",
-                date: new Date("2024-10-13")
-            },
-            {
-                title: "Asistente de Proyectos",
-                company: "",
-                province: "Panamá",
-                contact: "openworkpty@gmail.com",
-                description: "- Cursando estudios universitarios\n- Manejo intermedio / avanzado de AUTOCAD\n- Licencia de conducir\n- Entusiasta, extrovertida, dinámica",
-                date: new Date("2024-10-13")
-            },
-            {
-                title: "Ejecutivo de Ventas",
-                company: "MultiGroup",
-                province: "Panamá",
-                contact: "reclutamiento@multigroup.com",
-                description: "Responsable de visitar a clientes, prospectar y generar relaciones a largo plazo para atención de ventas en canales de mayoreo, proyectos e industriales. Promocionar y colocar nuestros productos derivados del acero. Gestión de cobranza y actividades administrativas de la posición comercial.",
-                date: new Date("2024-10-13")
-            },
-            // Agregar más trabajos si lo deseas...
+            { title: "Ayudante General", company: "Industrias Eupan, S.A.", province: "Panamá", contact: "reclutamientoeupan@gmail.com", description: "Requisitos:\n- Secundaria completa.\n- Récord policivo al día.", date: new Date(2024, 9, 15) }, // Nota: Los meses son indexados desde 0
+            { title: "Director de Alimentos y Bebidas", company: "Waymore Hotel, Spa & Casino", province: "Panamá", contact: "reclutamiento@waymorehotels.com", description: "Responsable de la dirección del departamento de alimentos y bebidas. Requiere experiencia en la industria hotelera.", date: new Date(2024, 9, 15) },
+            { title: "Agente de Seguridad", company: "Waymore Hotel, Spa & Casino", province: "Panamá", contact: "reclutamiento@waymorehotels.com", description: "Responsable de la seguridad del hotel. Se requiere experiencia previa en seguridad y récord policivo al día.", date: new Date(2024, 9, 15) },
+            { title: "Asistente de Operaciones Estratégicas", company: "Aura BioBalance", province: "Panamá", contact: "aurabiobalance@gmail.com, WhatsApp: +507 6581-0978 o +507 6563-7180", description: "Buscamos un(a) candidato(a) apasionado por la salud integral para trabajar en nuestro centro de bienestar.", date: new Date(2024, 9, 15) },
+            { title: "Agente de Servicio al Cliente y Operaciones IRF", company: "DHL Panamá", province: "Panamá", contact: "https://acortar.link/Yryhfs", description: "Multinacional líder en logística busca Agente de Servicio al Cliente y Operaciones para manejar embarques terrestres internacionales.", date: new Date(2024, 9, 15) },
+            { title: "Auxiliar de Bodega", company: "PedidosYa", province: "Panamá, San Francisco", contact: "https://acortar.link/XYlunX", description: "Encargado del armado y empaquetado de pedidos, asegurando el nivel de servicio esperado (pedido en tiempo y forma, correcto empaquetado).", date: new Date(2024, 9, 15) },
+            { title: "Doméstica con Salidas Diarias", company: "Gabriela Barrios", province: "Santa Clara", contact: "61463624", description: "Se requiere doméstica para limpieza del hogar y apoyo en el cuidado de los niños. Solo si cumple con los requisitos, escribir al WhatsApp.", date: new Date(2024, 9, 15) },
+            { title: "Barberos, Estilistas Profesionales, Manicurista Experta en Acrílico", company: "Candy Estilos", province: "Panamá, Pedregal", contact: "60646967", description: "Buscamos barberos, estilistas profesionales y manicuristas expertas en acrílico para trabajar en nuestro salón.", date: new Date(2024, 9, 15) },
+            { title: "Cajera Salonera", company: "", province: "Santa Clara", contact: "66125235", description: "Requisitos: escolaridad completa, uso de computadora, manejo de programa de caja y punto de venta.", date: new Date(2024, 9, 15) },
+            { title: "Ayudante General", company: "Cervecería Nacional, S. de R.L.", province: "Panamá", contact: "https://acortar.link/bCsfzx", description: "Estamos en la búsqueda de un(a) Ayudante General para el área de bodega en el Centro de Distribución de Las Sabanas (Vía España).", date: new Date(2024, 9, 15) },
+            { title: "Cocinero Para Fonda", company: "Metro Fonda", province: "Panamá", contact: "66691970", description: "EXPERIENCIA EN COMIDAS, DESAYUNOS CRIOLLOS Y MARISCOS CARNÉ DE SALUD VIGENTES", date: new Date(2024, 9, 15) },
+            { title: "Auxiliar de Cocina", company: "La Rana Dorada", province: "Chiriquí", contact: "recursoshumanos@laranadorada.com", description: "Residir en David", date: new Date(2024, 9, 15) },
+            { title: "Cajero (David)", company: "La Rana Dorada", province: "Chiriquí", contact: "recursoshumanos@laranadorada.com", description: "Cajero", date: new Date(2024, 9, 15) },
+            { title: "Cocinero", company: "", province: "Panamá Oeste, Arraiján", contact: "6919-4079", description: "Cocinero o cocinera con 'Excelente' sazón.", date: new Date(2024, 9, 15) },
+            { title: "Abogado/a Inmobiliario", company: "", province: "Panamá", contact: "", description: "Buscamos un abogado/a inmobiliario para asesorar a clientes sobre sus derechos, representar clientes en disputas y brindar asesoría legal sobre bienes raíces.", date: new Date(2024, 9, 15) }
         ];
 
+        const jobsPerPage = 7; // Número de trabajos por página
         let currentPage = 1;
-        const jobsPerPage = 10;
 
         function displayJobs() {
-            const jobContainer = document.getElementById('jobsContainer');
-            const pagination = document.getElementById('pagination');
-            jobContainer.innerHTML = '';
-            pagination.innerHTML = '';
+            const jobsContainer = document.getElementById('jobsContainer');
+            jobsContainer.innerHTML = ''; // Limpiar contenido anterior
 
-            // Filtrar trabajos según el texto de búsqueda
-            const searchQuery = document.getElementById('searchBar').value.toLowerCase();
-            const filteredJobs = jobs.filter(job => 
-                job.title.toLowerCase().includes(searchQuery) ||
-                (job.company && job.company.toLowerCase().includes(searchQuery)) ||
-                job.description.toLowerCase().includes(searchQuery)
-            );
-
-            // Paginación
-            const totalJobs = filteredJobs.length;
-            const totalPages = Math.ceil(totalJobs / jobsPerPage);
+            // Calcular el índice de inicio y fin
             const startIndex = (currentPage - 1) * jobsPerPage;
-            const endIndex = startIndex + jobsPerPage;
-            const jobsToDisplay = filteredJobs.slice(startIndex, endIndex);
+            const endIndex = Math.min(startIndex + jobsPerPage, jobs.length);
 
-            // Mostrar trabajos
-            jobsToDisplay.forEach((job) => {
-                const jobDiv = document.createElement('div');
-                jobDiv.classList.add('job');
-
-                const jobTitle = document.createElement('h2');
-                jobTitle.innerText = job.title;
-                jobDiv.appendChild(jobTitle);
-
-                if (job.company) {
-                    const jobCompany = document.createElement('p');
-                    jobCompany.innerText = `Empresa: ${job.company}`;
-                    jobDiv.appendChild(jobCompany);
-                }
-
-                const jobProvince = document.createElement('p');
-                jobProvince.innerText = `Provincia: ${job.province}`;
-                jobDiv.appendChild(jobProvince);
-
-                const jobContact = document.createElement('p');
-                jobContact.innerText = `Contacto: ${job.contact}`;
-                jobDiv.appendChild(jobContact);
-
-                const jobDescription = document.createElement('p');
-                jobDescription.innerText = job.description;
-                jobDiv.appendChild(jobDescription);
-
-                const jobDate = document.createElement('p');
-                jobDate.innerText = `Fecha de publicación: ${job.date.toLocaleDateString()}`;
-                jobDiv.appendChild(jobDate);
-
-                jobContainer.appendChild(jobDiv);
-            });
-
-            // Mostrar paginación
-            for (let i = 1; i <= totalPages; i++) {
-                const button = document.createElement('button');
-                button.innerText = i;
-                button.disabled = i === currentPage;
-                button.onclick = () => {
-                    currentPage = i;
-                    displayJobs();
-                };
-                pagination.appendChild(button);
+            // Mostrar trabajos de la página actual
+            for (let i = startIndex; i < endIndex; i++) {
+                const job = jobs[i];
+                const jobElement = document.createElement('div');
+                jobElement.className = 'job';
+                jobElement.innerHTML = `
+                    <h2>${job.title}</h2>
+                    <p><strong>Empresa:</strong> ${job.company}</p>
+                    <p><strong>Provincia:</strong> ${job.province}</p>
+                    <p><strong>Contacto:</strong> ${job.contact}</p>
+                    <p><strong>Descripción:</strong> ${job.description}</p>
+                    <p><strong>Fecha:</strong> ${job.date.toLocaleDateString('es-ES')}</p>
+                `;
+                jobsContainer.appendChild(jobElement);
             }
+
+            // Actualizar botones de paginación
+            document.getElementById('prevButton').disabled = currentPage === 1;
+            document.getElementById('nextButton').disabled = endIndex >= jobs.length;
+            document.getElementById('prevButton').classList.toggle('disabled', currentPage === 1);
+            document.getElementById('nextButton').classList.toggle('disabled', endIndex >= jobs.length);
         }
 
-        function filterJobs() {
-            currentPage = 1; // Reiniciar a la primera página al filtrar
-            displayJobs();
-        }
+        document.getElementById('prevButton').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayJobs();
+            }
+        });
 
+        document.getElementById('nextButton').addEventListener('click', () => {
+            if ((currentPage * jobsPerPage) < jobs.length) {
+                currentPage++;
+                displayJobs();
+            }
+        });
+
+        // Inicializar la visualización de trabajos
         displayJobs();
     </script>
-
 </body>
 </html>
