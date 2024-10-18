@@ -29,15 +29,6 @@
         gtag('config', 'G-MZ5KZ92E8R');
     </script>
 
-    <!-- Adcash library -->
-    <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
-    <script type="text/javascript">
-        aclib.runAutoTag({
-        zoneId: 'yrg8cqznp3', // Reemplaza YOUR_ADCASH_ID con tu ID de Adcash
-    });
-    </script>
-    <!-- End Adcash library -->
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -94,6 +85,20 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .job {
+                width: 100%;
+                max-width: 100%;
+            }
+            .search-bar {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -130,6 +135,7 @@
             { title: "Auditor de Almacen", company: "MECOPT", province: "Panamá Oeste, La Mitra", contact: '<a href="mailto:optinetvacantes@gmail.com" style="color: blue;">Enviar correo</a>', description: "Auditor de Inventarios que analice, evalúe y diagnostique el proceso de control de inventarios en las diferentes ubicaciones de la compañía, identificando causas raíces y oportunidades de mejora que mitiguen las pérdidas.", date: new Date(2024, 9, 16) },
             { title: "Personal de Manicure y Pedicure", company: "MonSpa", province: "Panamá, San Francisco", contact: '<a href="mailto:monspa35@gmail.com" style="color: blue;">Enviar correo</a>', description: "Si no tienes la certificación, pero tienes habilidades en manicure y pedicure, también te puedes postular. Se valora la puntualidad y el trabajo en equipo.", date: new Date(2024, 9, 16) },
             { title: "Meseros (Hombres y Mujeres)", company: "Casa Blanca", province: "Panamá, San Francisco", contact: '<a href="https://api.whatsapp.com/send/?phone=50765353792" target="_blank" style="color: blue;">Enviar mensaje por WhatsApp</a>', description: "Se busca meseros para trabajo a tiempo completo, que tengan conocimiento en el área, buena actitud y deseo de aprender.", date: new Date(2024, 9, 16) },
+            // Otros trabajos...
         ];
 
         let currentPage = 0;
@@ -174,6 +180,38 @@
         };
 
         displayJobs();
+
+        // Funcionalidad de búsqueda
+        document.querySelector('.search-bar').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const filteredJobs = jobs.filter(job => job.title.toLowerCase().includes(query) || job.description.toLowerCase().includes(query));
+            
+            // Redefinir paginación para resultados filtrados
+            currentPage = 0;
+            displayFilteredJobs(filteredJobs);
+        });
+
+        function displayFilteredJobs(filteredJobs) {
+            const jobsContainer = document.getElementById('jobsContainer');
+            jobsContainer.innerHTML = ''; // Limpiar trabajos anteriores
+            filteredJobs.forEach(job => {
+                const jobElement = document.createElement('div');
+                jobElement.className = 'job';
+                jobElement.innerHTML = `
+                    <h2>${job.title}</h2>
+                    <p><strong>Empresa:</strong> ${job.company}</p>
+                    <p><strong>Provincia:</strong> ${job.province}</p>
+                    <p><strong>Contacto:</strong> ${job.contact}</p>
+                    <p><strong>Descripción:</strong> ${job.description}</p>
+                    <p><strong>Fecha:</strong> ${job.date.toLocaleDateString()}</p>
+                `;
+                jobsContainer.appendChild(jobElement);
+            });
+
+            // Deshabilitar paginación para resultados filtrados
+            document.getElementById('prevButton').disabled = true;
+            document.getElementById('nextButton').disabled = true;
+        }
     </script>
 </body>
 </html>
