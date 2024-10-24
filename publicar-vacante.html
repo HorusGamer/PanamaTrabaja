@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicar Vacante - Panamá Trabaja</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h1 {
+            color: #0044cc;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #0044cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Publicar Vacante</h1>
+    <form id="vacancyForm">
+        <input type="text" id="title" placeholder="Nombre de la Vacante" required><br>
+        <input type="text" id="province" placeholder="Provincia" required><br>
+        <input type="text" id="company" placeholder="Nombre de la Empresa"><br>
+        <textarea id="description" placeholder="Descripción de la Vacante" required></textarea><br>
+        <input type="text" id="contact" placeholder="Contacto" required><br>
+        <button type="submit">Publicar Vacante</button>
+    </form>
+
+    <script>
+        document.getElementById('vacancyForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Recoger los datos del formulario
+            const title = document.getElementById('title').value;
+            const province = document.getElementById('province').value;
+            const company = document.getElementById('company').value;
+            const description = document.getElementById('description').value;
+            const contact = document.getElementById('contact').value;
+            const date = new Date();
+
+            // Almacenar los datos en el localStorage o enviarlos a un servidor
+            const newJob = {
+                title,
+                province,
+                company,
+                description,
+                contact,
+                date
+            };
+
+            // Guardar el trabajo en localStorage
+            let jobs = JSON.parse(localStorage.getItem('jobs')) || [];
+            jobs.push(newJob);
+            localStorage.setItem('jobs', JSON.stringify(jobs));
+
+            // Redirigir a la página principal
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
