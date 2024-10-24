@@ -3,83 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Publicar Vacante - Panamá Trabaja</title>
+    <title>Publicar Vacante</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
             background-color: #f4f4f4;
-            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        h1 {
-            color: #0044cc;
-        }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
+
+        .form-container {
+            background-color: white;
             padding: 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px; /* Ancho máximo del formulario */
+            width: 100%; /* Ancho del formulario ajustado al contenedor */
+            text-align: left;
         }
-        input, textarea {
-            width: 100%;
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%; /* Asegurarse de que los inputs ocupen todo el ancho del formulario */
             padding: 10px;
-            margin: 10px 0;
+            margin-top: 5px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 4px;
         }
+
+        textarea {
+            height: 100px; /* Altura del área de texto */
+        }
+
         button {
-            padding: 10px 15px;
+            padding: 10px 20px;
             background-color: #0044cc;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
         }
+
+        button:hover {
+            background-color: #003399;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Publicar Vacante</h1>
-    <form id="vacancyForm">
-        <input type="text" id="title" placeholder="Nombre de la Vacante" required><br>
-        <input type="text" id="province" placeholder="Provincia" required><br>
-        <input type="text" id="company" placeholder="Nombre de la Empresa"><br>
-        <textarea id="description" placeholder="Descripción de la Vacante" required></textarea><br>
-        <input type="text" id="contact" placeholder="Contacto" required><br>
-        <button type="submit">Publicar Vacante</button>
-    </form>
+
+    <div class="form-container">
+        <h2>Publicar Nueva Vacante</h2>
+        <form id="jobForm">
+            <label for="title">Título de la Vacante:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="province">Provincia:</label>
+            <input type="text" id="province" name="province" required>
+
+            <label for="description">Descripción:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="contact">Contacto:</label>
+            <input type="text" id="contact" name="contact" required>
+
+            <button type="submit">Publicar Vacante</button>
+        </form>
+    </div>
 
     <script>
-        document.getElementById('vacancyForm').addEventListener('submit', function(event) {
+        document.getElementById('jobForm').addEventListener('submit', function(event) {
             event.preventDefault();
-
-            // Recoger los datos del formulario
+            
             const title = document.getElementById('title').value;
             const province = document.getElementById('province').value;
-            const company = document.getElementById('company').value;
             const description = document.getElementById('description').value;
             const contact = document.getElementById('contact').value;
-            const date = new Date();
+            const date = new Date().toLocaleDateString(); // Genera la fecha actual
 
-            // Almacenar los datos en el localStorage o enviarlos a un servidor
             const newJob = {
-                title,
-                province,
-                company,
-                description,
-                contact,
-                date
+                title: title,
+                province: province,
+                description: description,
+                contact: contact,
+                date: date
             };
 
-            // Guardar el trabajo en localStorage
-            let jobs = JSON.parse(localStorage.getItem('jobs')) || [];
-            jobs.push(newJob);
-            localStorage.setItem('jobs', JSON.stringify(jobs));
+            console.log("Nueva vacante publicada:", newJob);
 
-            // Redirigir a la página principal
-            window.location.href = "index.html";
+            // Aquí puedes agregar el código para enviar los datos al servidor o agregarlos a la lista de trabajos principal.
+            alert("Vacante publicada correctamente");
         });
     </script>
+
 </body>
 </html>
