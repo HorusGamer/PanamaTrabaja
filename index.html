@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <header>
-    <div class="logo-container">
-        <img src="logopanamatrbaja.png" alt="Logo de Panamá Trabaja" class="logo">
-    </div>
-</header>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panamá Trabaja - Ofertas de Trabajo</title>
@@ -51,19 +46,36 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             background-color: #f4f4f4;
             text-align: center;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
+            height: auto; /* Mantiene la proporción de la imagen */
+        }
+
         h1 {
             color: #0044cc;
         }
+
         .search-container {
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
         }
+
         .search-bar {
             padding: 10px;
             border: 1px solid #ccc;
@@ -71,6 +83,7 @@
             width: 100%;
             max-width: 400px;
         }
+
         .job {
             background-color: #fff;
             padding: 15px;
@@ -81,15 +94,19 @@
             max-width: 600px;
             text-align: left;
         }
+
         .job h2 {
             color: #d32f2f;
         }
+
         .job p {
             color: #333;
         }
+
         .pagination {
             margin: 20px 0;
         }
+
         .pagination button {
             margin: 0 5px;
             padding: 10px 15px;
@@ -99,6 +116,7 @@
             color: white;
             cursor: pointer;
         }
+
         .pagination button.disabled {
             background-color: #ccc;
             cursor: not-allowed;
@@ -109,10 +127,12 @@
             body {
                 padding: 10px;
             }
+
             .job {
                 width: 100%;
                 max-width: 100%;
             }
+
             .search-bar {
                 max-width: 100%;
             }
@@ -126,6 +146,12 @@
         height="0" width="0" style="display:none;visibility:hidden"></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
+
+    <header>
+        <div class="logo-container">
+            <img src="logopanamatrbaja.png" alt="Logo de Panamá Trabaja" class="logo">
+        </div>
+    </header>
 
     <h1>VACANTES DE HOY</h1>
     <div class="search-container">
@@ -186,7 +212,6 @@
             { title: "Auxiliar de Bodega", company: "MECOPT", province: "Panamá Oeste, La Mitra", contact: '<a href="mailto:optinetvacantes@gmail.com" style="color: blue;">Enviar correo</a>', description: "Recibir, verificar e ingresar la documentación y la mercadería que debe resguardarse en la bodega. Almacenar y controlar la mercancía que ingresa de acuerdo con lo establecido.", date: new Date(2024, 9, 16) },
             { title: "Auditor de Almacen", company: "MECOPT", province: "Panamá Oeste, La Mitra", contact: '<a href="mailto:optinetvacantes@gmail.com" style="color: blue;">Enviar correo</a>', description: "Auditor de Inventarios que analice, evalúe y diagnostique el proceso de control de inventarios en las diferentes ubicaciones de la compañía, identificando causas raíces y oportunidades de mejora que mitiguen las pérdidas.", date: new Date(2024, 9, 16) },
             { title: "Personal de Manicure y Pedicure", company: "MonSpa", province: "Panamá, San Francisco", contact: '<a href="mailto:monspa35@gmail.com" style="color: blue;">Enviar correo</a>', description: "Si no tienes la certificación, pero tienes habilidades en manicure y pedicure, también te puedes postular. Se valora la puntualidad y el trabajo en equipo.", date: new Date(2024, 9, 16) },
-            { title: "Meseros (Hombres y Mujeres)", company: "Casa Blanca", province: "Panamá, San Francisco", contact: '<a href="https://api.whatsapp.com/send/?phone=50765353792" target="_blank" style="color: blue;">Enviar mensaje por WhatsApp</a>', description: "Se busca meseros para trabajo a tiempo completo, que tengan conocimiento en el área, buena actitud y deseo de aprender.", date: new Date(2024, 9, 16) },
         ];
 
         let currentPage = 1;
